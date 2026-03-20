@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+            <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -16,7 +16,6 @@
       height: 100vh;
     }
 
-    /* Header */
     .header {
       padding: 15px;
       font-size: 20px;
@@ -24,7 +23,6 @@
       border-bottom: 1px solid #333;
     }
 
-    /* Chat area */
     .chat-container {
       flex: 1;
       padding: 20px;
@@ -47,7 +45,7 @@
       letter-spacing: 2px;
     }
 
-    /* Input area */
+    /* Input section */
     .input-container {
       position: fixed;
       bottom: 0;
@@ -57,7 +55,6 @@
       padding: 10px;
       display: flex;
       justify-content: center;
-      align-items: center;
     }
 
     .input-box {
@@ -81,17 +78,31 @@
     }
 
     button {
-      background: #4CAF50;
       border: none;
       color: white;
-      padding: 10px 14px;
+      padding: 10px;
       border-radius: 50%;
       cursor: pointer;
       font-size: 16px;
+      margin: 0 3px;
     }
 
-    button:hover {
+    /* Send button */
+    .send-btn {
+      background: #4CAF50;
+    }
+
+    .send-btn:hover {
       background: #45a049;
+    }
+
+    /* Mic button */
+    #micBtn {
+      background: #333;
+    }
+
+    #micBtn.active {
+      background: red;
     }
 
     /* Chat messages */
@@ -104,13 +115,11 @@
 
     .user {
       background-color: #4CAF50;
-      align-self: flex-end;
       margin-left: auto;
     }
 
     .bot {
       background-color: #333;
-      align-self: flex-start;
     }
 
   </style>
@@ -129,13 +138,14 @@
       <h1>HELLO WORLD</h1>
       <p>READY FOR REQUEST</p>
     </div>
-
   </div>
+
   <!-- Input Area -->
   <div class="input-container">
     <div class="input-box">
+      <button id="micBtn">🎤</button>
       <input type="text" id="message" placeholder="How can I help you?" />
-      <button onclick="sendMessage()">➤</button>
+      <button class="send-btn" onclick="sendMessage()">➤</button>
     </div>
   </div>
 
@@ -148,37 +158,73 @@
       let text = input.value.trim();
       if (text === "") return;
 
-      // Remove welcome text after first message
       if (welcome) welcome.style.display = "none";
 
-      // User message
       let userMsg = document.createElement("div");
       userMsg.className = "message user";
       userMsg.innerText = text;
       chat.appendChild(userMsg);
 
-      // Bot reply (temporary)
       let botMsg = document.createElement("div");
       botMsg.className = "message bot";
       botMsg.innerText = "Thinking...";
       chat.appendChild(botMsg);
 
-      // Scroll down
       chat.scrollTop = chat.scrollHeight;
-
-      // Clear input
       input.value = "";
 
-      // Fake response (replace with API later)
       setTimeout(() => {
         botMsg.innerText = "This is a demo response.";
       }, 1000);
     }
-    // Enter key support
-      document.getElementById("message").addEventListener("keypress", function(e) {
+
+    document.getElementById("message").addEventListener("keypress", function(e) {
       if (e.key === "Enter") {
         sendMessage();
       }
+    });
+
+    // 🎤 MIC FEATURE
+    document.addEventListener("DOMContentLoaded", function () {
+
+      const micBtn = document.getElementById("micBtn");
+      const messageInput = document.getElementById("message");
+
+      let recognition;
+      let isListening = false;
+
+      if ('webkitSpeechRecognition' in window) {
+        recognition = new webkitSpeechRecognition();
+        recognition.continuous = false;
+        recognition.lang = "en-US";
+
+        recognition.onresult = function(event) {
+          const transcript = event.results[0][0].transcript;
+          messageInput.value = transcript;
+        };
+
+        recognition.onend = function() {
+          isListening = false;
+          micBtn.classList.remove("active");
+        };
+      } else {
+        micBtn.style.display = "none";
+      }
+
+      micBtn.onclick = () => {
+        if (!recognition) return;
+
+        if (!isListening) {
+          recognition.start();
+          isListening = true;
+          micBtn.classList.add("active");
+        } else {
+          recognition.stop();
+          isListening = false;
+          micBtn.classList.remove("active");
+        }
+      };
+
     });
   </script>
 
