@@ -1,4 +1,4 @@
-            <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -27,6 +27,7 @@
       flex: 1;
       padding: 20px;
       overflow-y: auto;
+      margin-bottom: 70px; /* space for input bar */
     }
 
     .welcome {
@@ -45,30 +46,33 @@
       letter-spacing: 2px;
     }
 
-    /* Input section */
+    /* INPUT BAR FIXED */
     .input-container {
       position: fixed;
       bottom: 0;
+      left: 0;
       width: 100%;
       background-color: #0d0d0d;
       border-top: 1px solid #333;
-      padding: 10px;
-      display: flex;
-      justify-content: center;
+      padding: 8px;
+      box-sizing: border-box;
     }
 
     .input-box {
       display: flex;
-      width: 90%;
+      width: 100%;
       max-width: 600px;
+      margin: 0 auto; /* center properly */
       background: #1a1a1a;
       border-radius: 25px;
       padding: 5px;
       align-items: center;
+      box-sizing: border-box;
     }
 
     input {
       flex: 1;
+      min-width: 0;
       padding: 12px;
       border: none;
       outline: none;
@@ -84,10 +88,10 @@
       border-radius: 50%;
       cursor: pointer;
       font-size: 16px;
-      margin: 0 3px;
+      margin: 0 2px;
+      flex-shrink: 0; /* prevent shrinking */
     }
 
-    /* Send button */
     .send-btn {
       background: #4CAF50;
     }
@@ -96,7 +100,6 @@
       background: #45a049;
     }
 
-    /* Mic button */
     #micBtn {
       background: #333;
     }
@@ -105,7 +108,7 @@
       background: red;
     }
 
-    /* Chat messages */
+    /* Messages */
     .message {
       margin: 10px 0;
       padding: 10px 15px;
@@ -127,12 +130,10 @@
 
 <body>
 
-  <!-- Header -->
   <div class="header">
     Brodev AI
   </div>
 
-  <!-- Chat Area -->
   <div class="chat-container" id="chat">
     <div class="welcome" id="welcome">
       <h1>HELLO WORLD</h1>
@@ -140,7 +141,7 @@
     </div>
   </div>
 
-  <!-- Input Area -->
+  <!-- INPUT BAR -->
   <div class="input-container">
     <div class="input-box">
       <button id="micBtn">🎤</button>
@@ -184,7 +185,7 @@
       }
     });
 
-    // 🎤 MIC FEATURE
+    // MIC FEATURE
     document.addEventListener("DOMContentLoaded", function () {
 
       const micBtn = document.getElementById("micBtn");
